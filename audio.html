@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+
+  <head>
+  	<title>Sample Gallery - Creator Kent</title>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/stylesheets/gmain.css" />
+    <link type="text/css" rel="stylesheet" href="/stylesheets/stylesheets/bootstrap.css" />
+    <link type="text/css" rel="stylesheet" href="/stylesheets/stylesheets/bootstrap.min.css" />
+  </head>
+  
+  <body>
+  
+  <div class="content">
+  	<div class="head"> 
+  		<div class="bg_picture"></div>
+  		<div class="nav_top">
+  		<ul class="nav nav-pills">
+		    <li class="active"><a href="{{ url|safe }}">{{ url_linktext }}</a></li>
+			<li><a href="/"><i class="icon-home icon-white"></i>Home</a></li>
+			<li><a href="upload_form">upload page</a></li>
+			
+			<li><a href="{{url_image | safe}}">{{link_image}}</a></li>
+			
+		    <li><a href="{{ url_video |safe }}">{{ link_video }}</a></li>	
+		    
+		    <li><a href="{{ url_audio |safe }}">{{ link_audio }}</a></li>
+	    </ul>
+    	</div>
+  	</div>
+  	
+  	<div class="inner_content">
+  	
+    <div class="audio" >
+      <span class="row">Media Content require 1-minute to load after upload.Support mp3, wmv, ogg images </span><br>
+     <table class="table table-striped">
+    {% if (blobs|length() == 0) %}
+     	<div class="alert alert-info">No audio is not found</div>
+    {% else%}
+    	<tr><th>File Name:</th><th>ACTION</th></tr>
+	{% endif %}
+
+    {% for blob in blobs %}
+		<tr>
+        <th> {{ blob.filename }} </th> 
+        <th>
+         <div class="btn-group">
+		  <a href="/serve/{{ blob.key() }}" class="btn btn-mini btn btn-info" target="_blank"> Detail </a></button>
+		  <a href="#myModal{{ blob.filename.replace('_','').replace('.','')[0:5] }}" role="button" class="btn btn-mini btn btn-info" data-toggle="modal" >Preview</a></button>
+
+		</div>
+	        </th> 
+
+       
+       <div id="myModal{{ blob.filename.replace('_','').replace('.','')[0:5]  }}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel{{ blob.key() }}" aria-hidden="true">
+		    	<div class="modal-header">
+		    	<h5>{{ blob.filename}}</h5>
+		    	</div>
+		    	<div class="modal-body">
+		    	<audio controls>
+				  <source src="/serve/{{blob.key()}}" type="audio/mp3">
+				  <source src="/serve/{{blob.key()}}" type="audio/ogg">
+					Your browser does not support the audio element.
+				</audio>
+		    	</div>
+		    	<div class="modal-footer">
+		    		<button class="btn btn-small" data-dismiss="modal" aria-hidden="true">Close</button>
+		    	</div>
+		</div>
+		<blockquote>
+       </blockquote>
+      
+       {% endfor %}
+     </table>
+    </div>   
+    	
+
+    
+    {% if (page == "item_not_found") %}
+   	<h4>{{ blobs }}</h4>
+    {% endif %}
+    
+ 	</div>
+  
+    <div class="footer">
+
+    <ul class="nav nav-pills">
+	<li><a href="/">Home</a></li>
+	<li><a href="upload_form">upload page</a></li>
+	
+	<li><a href="{{url_image | safe}}">{{link_image}}</a></li>
+	
+    <li><a href="{{ url_video |safe }}">{{ link_video }}</a></li>	
+    
+    <li><a href="{{ url_audio |safe }}">{{ link_audio }}</a></li>
+    </ul>
+    <img src="https://developers.google.com/appengine/images/appengine-silver-120x30.gif" 
+alt="Powered by Google App Engine" />
+    </div>
+   </div>
+   
+  <script type="text/javascript" src="/_ah/channel/jsapi"></script>
+  <script src="http://code.jquery.com/jquery.js"></script>
+  <script type="text/javascript" src="/stylesheets/js/bootstrap.js" ></script>
+
+  </body>
+</html>
+{% endautoescape %}
